@@ -24,6 +24,7 @@ from __init__ import __RVI_LOGGER__ as logger
 from vehicles.models import Vehicle
 from tracking.models import Location
 
+import ast
 
 # Tracking Callback Server
 class TrackingCallbackServer(threading.Thread):
@@ -37,7 +38,7 @@ class TrackingCallbackServer(threading.Thread):
         self.callback_url = callback_url
         threading.Thread.__init__(self)
         url = urlparse(self.callback_url)
-        self.localServer =  RVIJSONRPCServer(addr=((url.hostname, url.port)), logRequests=False)
+        self.localServer =  RVIJSONRPCServer(addr=((url.hostname, url.port)), logRequests=True)
         self.register_services()
         
     def register_services(self):
@@ -71,9 +72,14 @@ def report(timestamp, vin, data):
     location.loc_vehicle = vehicle
     location.loc_time = timestamp
 
+    if isinstance(data, str) or isinstance(data, unicode):
+        logger.info('data is string')
+        data = ast.literal_eval(data)
+
     for channel in data:
         key = channel['channel']
         value = channel['value']
+        logger.info('%s: %s', key, value)
         if key == 'location':
             location.loc_latitude = value['lat']
             location.loc_longitude = value['lon']
@@ -83,7 +89,9 @@ def report(timestamp, vin, data):
         elif key == 'odometer':
             location.loc_odometer = float(value)
 
+    print 'Saving', location
     location.save()
+    logger.info('Saved')
 
     return {u'status': 0}
 

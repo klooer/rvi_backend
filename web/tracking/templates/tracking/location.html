@@ -18,10 +18,13 @@
 {% block map_view %}
     <script type="text/javascript">
         var positions = {{ position|geojsonfeature:"vehicle_info"|safe }};
+        console.log('positions: ', positions);
 
         function onEachFeature(feature, layer) {
+            console.log('feature: ', feature);
             if (feature.properties && feature.properties.vehicle_info) {
                 var veh_info = feature.properties.vehicle_info;
+                console.log('vechile info: ', veh_info);
                 var popup_content = "<p><img src=" + veh_info[1] + " height='50px'></p><p>" + "<b>" + veh_info[0] +"</b>" +
                                     "<br>Time: " + veh_info[2] + "<br>Speed: " + Math.round(veh_info[3] * 3.6) + " km/h";
                 layer.bindPopup(popup_content);
@@ -32,11 +35,30 @@
             // place markers
             var markers = L.geoJson(positions, {onEachFeature: onEachFeature});
             //var markers = L.geoJson(positions)
+            console.log('markers: ', markers);
                     
             // set map viewport
             var group = new L.featureGroup([markers]);
-            map.fitBounds(group.getBounds());
+            // map.fitBounds(group.getBounds());
+
+            console.log('group.getBounds...');
+            var bounds = group.getBounds();
+            console.log('bounds: ', bounds);
+            if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+                var extendPoint = new L.LatLng(bounds.getNorthEast().lat + 0.01, bounds.getNorthEast().lng + 0.01);
+                bounds.extend(extendPoint);
+                extendPoint = new L.LatLng(bounds.getSouthWest().lat - 0.01, bounds.getSouthWest().lng - 0.01);
+                bounds.extend(extendPoint);
+                console.log('extended bounds: ', bounds);
+            }
+
+            console.log('map.fitBounds...');
+            map.fitBounds(bounds);
+
+            console.log('markers.addTo..map...');
             markers.addTo(map);
+
+            console.log('main_map_init end');
         }
     </script>
             

@@ -26,25 +26,30 @@ class RVIJSONRPCServer(SimpleJSONRPCServer):
         Check if method is 'message', if so dispatch on
         name 'service_name' instead.
         """
-        # print "dispatch:", params
+        print "dispatch:", params
         if method == 'message':
-            # print "Will dispatch message to: " + params['service_name']
+            print "Will dispatch message to: " + params['service_name']
             dict_param = {}
             # Extract the 'parameters' element from the top level JSON-RPC
             # 'param'. 
             # Convert 'parameters' from [{'vin': 1234}, {hello: 'world'}] to
             # a regular dictionary: {'vin': 1234, hello: 'world'}
 
-            #print "Service:", params['service_name']
-            #print "Parameters:", params['parameters']
+            print "Service:", params['service_name']
+            print "Parameters:", params['parameters']
             msg_params = params['parameters']
-            for i in range(0, len(msg_params)):
-                for j in range(0, len(msg_params[i].keys())):
-                    #print "params", msg_params[i].keys()[j], "=", msg_params[i].values()[j]
-                    dict_param[msg_params[i].keys()[j]] = msg_params[i].values()[j]
-
-            # print "Parameter dictionary: ", dict_param
-            # print 
+            # """
+            if isinstance(msg_params, list):
+                for i in range(0, len(msg_params)):
+                    print "params", msg_params[i].keys(), msg_params[i].values()
+                    for j in range(0, len(msg_params[i].keys())):
+                        print "params", msg_params[i].keys()[j], "=", msg_params[i].values()[j]
+                        dict_param[msg_params[i].keys()[j]] = msg_params[i].values()[j]
+            elif isinstance(msg_params, dict):
+                dict_param = msg_params
+            # """
+            print "Parameter dictionary: ", dict_param
+            print
             # Ship the processed dispatch info upward.
             return SimpleJSONRPCServer._dispatch(self, params['service_name'], dict_param)           
         return SimpleJSONRPCServer._dispatch(self,message, params)

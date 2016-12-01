@@ -169,7 +169,9 @@ class Position(models.Model):
     @property
     def vehicle_info(self):
         position = self.select_location()
+        print 'position: ', position
         if position:
+            print self.wp_vehicle.veh_name, position[0].loc_time, position[0].loc_speed
             return [self.wp_vehicle.veh_name, self.wp_vehicle.get_picture(), position[0].loc_time, position[0].loc_speed]
         else:
             return [self.wp_vehicle.veh_name, self.wp_vehicle.get_picture()]

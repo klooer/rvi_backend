@@ -68,10 +68,13 @@ def location(request, vehicle_id=-1, at_date='9999-12-31', at_time='23:59:59'):
     
     position = get_position(vehicle_id, at_date, at_time)
 
+    print 'vehicle: ', vehicle_id, "date: ", at_date, "time: ", at_time, "position: ", position
+
     context = RequestContext(request, {
         'position': position,
     })
     
+    print 'Rendering tracking/location.html'
     return HttpResponse(template.render(context))
 
 
@@ -87,6 +90,7 @@ def index(request):
         'vehicles': vehicles,
     })
     
+    print 'Rendering tracking/index.html'
     return HttpResponse(template.render(context))
 
 

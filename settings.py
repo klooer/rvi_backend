@@ -36,7 +36,7 @@ SECRET_KEY = 'y7pg3qz)6fs4vk4=)_*fn(dagsx+t!wvl=p&d3ybm(yc%((&pg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 # We allow all hosts to connect
 ALLOWED_HOSTS = ['*']
@@ -122,7 +122,7 @@ LOGGING = {
              'formatter': 'simple',
         },
         'file': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'log/rvibackend.log'),
             'formatter': 'verbose',
@@ -234,10 +234,11 @@ LEAFLET_ANIMATION_INTERVAL = "100"
 # RVI Server Daemon Configuration
 RVI_DB_PING_INTERVAL = 10
 RVI_DB_CLOSE_TIMEOUT = 3600
-RVI_SERVICE_EDGE_URL = 'http://127.0.0.1:8801'
+RVI_SERVICE_EDGE_URL = 'http://127.0.0.1:9001'
 
 # SOTA
-RVI_SOTA_ENABLE = False
+#RVI_SOTA_ENABLE = False
+RVI_SOTA_ENABLE = True
 RVI_SOTA_CALLBACK_URL = 'http://127.0.0.1:20001'
 RVI_SOTA_SERVICE_ID = '/sota'
 RVI_SOTA_CHUNK_SIZE = 65536
@@ -258,7 +259,8 @@ RVI_DM_SERVICE_ID = '/dm'
 
 # Tracking
 #RVI_TRACKING_SOURCE_GPS = True
-RVI_TRACKING_ENABLE = False
+#RVI_TRACKING_ENABLE = False
+RVI_TRACKING_ENABLE = True
 RVI_TRACKING_CALLBACK_URL = 'http://127.0.0.1:20002'
 RVI_TRACKING_SERVICE_ID = '/logging'
 
