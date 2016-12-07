@@ -31,7 +31,7 @@ urlpatterns = patterns('',
 
     url(r'^latest_location/$', views.latest_location, name='latest_location'),
 
-    url(r'^latest_location/(?P<vehicle_id>\d+)/$', views.latest_location, name='latest_location'),
+    url(r'^latest_location/(?P<vehicle_id>.+)/$', views.latest_location, name='latest_location'),
 
 
     url(r'^replay/$', views.replay, name='replay'),
