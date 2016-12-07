@@ -14,6 +14,7 @@ Software Over The Air (SOTA) services.
 
 import os, threading, base64
 import time
+from datetime import datetime
 from urlparse import urlparse
 import Queue
 from rvijsonrpc import RVIJSONRPCServer
@@ -70,7 +71,10 @@ def report(timestamp, vin, data):
 
     location = Location()
     location.loc_vehicle = vehicle
-    location.loc_time = timestamp
+    try:
+        location.loc_time = datetime.fromtimestamp(float(timestamp))
+    except:
+        location.loc_time = timestamp
 
     if isinstance(data, str) or isinstance(data, unicode):
         logger.info('data is string')
