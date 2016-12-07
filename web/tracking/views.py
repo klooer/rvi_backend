@@ -35,6 +35,14 @@ def get_position(vehicle_id=-1, at_date='9999-12-31', at_time='23:59:59'):
         return Position.objects.filter(wp_vehicle_id=vehicle_id)
 
         
+def get_latest_location(vehicle_vin='-1'):
+    print vehicle_vin
+    if vehicle_vin == '-1':
+        return Location.objects.filter(loc_vehicle__veh_vin='123456').latest('loc_time').to_json()
+    else:
+        return Location.objects.filter(loc_vehicle__veh_vin=vehicle_vin).latest('loc_time').to_json()
+
+
 
 
 def tracking(request, vehicle_id=-1, from_date='1970-01-01', to_date='9999-12-31', from_time='00:00:00', to_time='23:59:59'):
@@ -76,6 +84,19 @@ def location(request, vehicle_id=-1, at_date='9999-12-31', at_time='23:59:59'):
     
     print 'Rendering tracking/location.html'
     return HttpResponse(template.render(context))
+
+
+def latest_location(request, vehicle_id='-1'):
+
+    location = get_latest_location(vehicle_id)
+
+    print 'vehicle: ', vehicle_id, "latest location: ", location
+    response_data = location;
+
+    #return JsonResponse({'foo':'bar'})
+
+    #return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return HttpResponse(response_data, content_type="application/json")
 
 
 def index(request):

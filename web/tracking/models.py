@@ -62,6 +62,19 @@ class Location(models.Model):
                  str(self.loc_speed * 3.6) + " km/h"
                 )
                 
+    def to_json(self):
+        """
+        Returns the Location JSON formatted string.
+        """
+        return ("{\"vin\":\"" + self.loc_vehicle.get_vin() +
+                 "\",\"timestamp\":\"" + unicode(self.loc_time) +
+                 "\",\"data\":[{\"channel\":\"location\",\"value\":{" +
+                 "\"lon\":\"" + str(self.loc_longitude) +
+                 "\",\"lat\":\"" + str(self.loc_latitude) +
+                 "\"}},{\"channel\":\"speed\",\"value\":\"" + str(self.loc_speed * 3.6) +
+                 "\"}]}"
+                )
+
     def get_vehicle_name(self):
         """
         Returns the name of the vehicle associated with this Location

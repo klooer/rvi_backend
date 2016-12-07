@@ -83,6 +83,9 @@ class Vehicle(Account):
     def get_name(self):
         return self.veh_name
         
+    def get_vin(self):
+        return self.veh_vin
+
     def get_rvi_id(self):
         return self.veh_rvibasename + '/vin/' + self.veh_vin
 		
