@@ -38,7 +38,7 @@ def get_position(vehicle_id=-1, at_date='9999-12-31', at_time='23:59:59'):
 def get_latest_location(vehicle_vin='-1'):
     print vehicle_vin
     if vehicle_vin == '-1':
-        return Location.objects.filter(loc_vehicle__veh_vin='123456').latest('loc_time').to_json()
+        return Location.objects.latest('loc_time').to_json()
     else:
         return Location.objects.filter(loc_vehicle__veh_vin=vehicle_vin).latest('loc_time').to_json()
 
