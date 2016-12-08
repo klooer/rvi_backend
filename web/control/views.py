@@ -17,9 +17,9 @@ def handle_control(request, vehicle_vin='-1'):
         vehicle = Vehicle.objects.filter(veh_vin=vehicle_vin)[0]
 
         if request.method == 'POST':
-            received_json_data = json.loads(request.body)
-            print 'received json data', received_json_data
             try:
+                received_json_data = json.loads(request.body)
+                print 'received json data', received_json_data
                 command = received_json_data['command']
                 print 'command: ', command
                 try:
@@ -30,6 +30,8 @@ def handle_control(request, vehicle_vin='-1'):
                     print str(e)
                     return HttpResponse('Send control command failed', content_type="plain/text")
             except:
-                return HttpResponse('Invalid command format', content_type="plain/text")
+                return HttpResponse('Invalid control message format', content_type="plain/text")
+        else:
+            return HttpResponse('POST action is expected', content_type="plain/text")
     except:
         return HttpResponse('No valid vehicle found.', content_type="plain/text")
